@@ -1,4 +1,120 @@
 /* ========================= */
+/*       EVENT BUS           */
+/* ========================= */
+
+const EventBus = {
+    events: {},
+    on(event, handler) {
+        if (!this.events[event]) this.events[event] = [];
+        this.events[event].push(handler);
+    },
+    emit(event, data) {
+        if (this.events[event]) {
+            this.events[event].forEach(h => h(data));
+        }
+    }
+};
+
+/* ========================= */
+/*       STATE MACHINE       */
+/* ========================= */
+
+const State = {
+    currentPanel: null,
+    currentChamber: null
+};
+
+/* ========================= */
+/*       CONSOLE ENGINE      */
+/* ========================= */
+
+const consoleToggle = document.getElementById("console-toggle");
+const consoleEl = document.getElementById("console");
+const navItems = document.querySelectorAll(".console-nav li");
+const panels = document.querySelectorAll(".console-panel");
+
+consoleToggle.addEventListener("click", () => {
+    consoleEl.classList.toggle("visible");
+    SoundEngine.play("console");
+});
+
+navItems.forEach(item => {
+    item.addEventListener("click", () => {
+        const target = item.dataset.panel;
+
+        panels.forEach(p => p.classList.remove("visible"));
+        document.getElementById(target).classList.add("visible");
+
+        State.currentPanel = target;
+        SoundEngine.play("panel");
+    });
+});
+
+/* ========================= */
+/*       CHAMBER ENGINE      */
+/* ========================= */
+
+const chambers = document.querySelectorAll(".chamber");
+
+chambers.forEach(chamber => {
+    chamber.addEventListener("click", () => {
+        State.currentChamber = chamber.id;
+        SoundEngine.play("chamber");
+    });
+});
+
+/* ========================= */
+/*       OVERLAY ENGINE      */
+/* ========================= */
+
+const overlay = document.getElementById("overlay");
+const overlayContent = document.querySelector(".overlay-content");
+
+EventBus.on("overlay", content => {
+    overlayContent.innerHTML = content;
+    overlay.classList.remove("hidden");
+    SoundEngine.play("overlay");
+});
+
+overlay.addEventListener("click", () => {
+    overlay.classList.add("hidden");
+});
+
+/* ========================= */
+/*       MEMORY ENGINE       */
+/* ========================= */
+
+const MemoryEngine = {
+    store: [],
+    add(entry) {
+        this.store.push(entry);
+        SoundEngine.play("memory");
+    }
+};
+
+/* ========================= */
+/*       RITUAL ENGINE       */
+/* ========================= */
+
+const RitualEngine = {
+    run(name) {
+        EventBus.emit("overlay", `<h2>Ritual: ${name}</h2>`);
+        SoundEngine.play("ritual");
+    }
+};
+
+/* ========================= */
+/*   IDENTITY DRIFT ENGINE   */
+/* ========================= */
+
+const IdentityEngine = {
+    drift() {
+        EventBus.emit("overlay", `<h2>Identity Drift Initiated</h2>`);
+        SoundEngine.play("identity");
+    }
+};
+
+/* ========================= */
 /*       SOUND ENGINE        */
 /* ========================= */
 
@@ -49,7 +165,6 @@ const SoundEngine = (() => {
         play(name) {
             const v = voices[name];
             if (!v) return;
-            // resume context if needed (autoplay policies)
             if (ctx.state === "suspended") {
                 ctx.resume().then(v);
             } else {
