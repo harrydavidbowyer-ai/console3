@@ -1,4 +1,93 @@
 /* ========================= */
+/*        GLOBAL BASE        */
+/* ========================= */
+
+body {
+    background: #0b0b0d;
+    color: #e8e6e3;
+    font-family: "Inter", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* ========================= */
+/*        BOOT OVERLAY       */
+/* ========================= */
+
+.boot-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #0b0b0d;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 1.2s ease;
+    z-index: 9999;
+}
+
+.boot-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.boot-glyph {
+    font-size: 80px;
+    color: #ffb35c;
+    text-shadow: 0 0 32px rgba(255, 140, 0, 0.75);
+    animation: bootIgnite 2.4s infinite ease-in-out;
+}
+
+@keyframes bootIgnite {
+    0% { transform: scale(1); opacity: 0.85; }
+    50% { transform: scale(1.18); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.85; }
+}
+
+.boot-title {
+    margin-top: 20px;
+    font-size: 28px;
+    letter-spacing: 4px;
+    color: #ffb35c;
+    opacity: 0;
+    animation: bootTitleFade 2.2s ease forwards 0.6s;
+}
+
+@keyframes bootTitleFade {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========================= */
+/*       CONSOLE BUTTON      */
+/* ========================= */
+
+.console-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 26px;
+    border: 1px solid #ff8c00;
+    background: rgba(255, 140, 0, 0.08);
+    color: #ffb35c;
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+    border-radius: 6px;
+    transition: 0.25s ease;
+    z-index: 20;
+}
+
+.console-toggle:hover {
+    background: rgba(255, 140, 0, 0.18);
+    box-shadow: 0 0 12px rgba(255, 140, 0, 0.35);
+}
+
+/* ========================= */
 /*         CONSOLE UI        */
 /* ========================= */
 
@@ -14,9 +103,8 @@
     transform: translateX(110%);
     transition: transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
     padding-top: 70px;
-
-    /* cinematic spine glow */
     box-shadow: -6px 0 22px rgba(255, 140, 0, 0.18);
+    z-index: 10;
 }
 
 .console.visible {
@@ -24,7 +112,12 @@
     box-shadow: -12px 0 28px rgba(255, 140, 0, 0.28);
 }
 
-/* NAV ITEMS */
+.console-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
 .console-nav li {
     padding: 14px 24px;
     cursor: pointer;
@@ -38,7 +131,6 @@
     border-left: 3px solid rgba(255, 140, 0, 0.4);
 }
 
-/* ACTIVE NAV ITEM */
 .console-nav li.active {
     background: rgba(255, 140, 0, 0.18);
     border-left: 3px solid #ff8c00;
@@ -46,7 +138,6 @@
     box-shadow: inset 0 0 12px rgba(255, 140, 0, 0.25);
 }
 
-/* PANELS */
 .console-panel {
     display: none;
     padding: 24px;
@@ -59,4 +150,281 @@
     display: block;
     opacity: 1;
     transform: translateY(0);
+}
+
+/* ========================= */
+/*       CHAMBER GRID        */
+/* ========================= */
+
+.chamber-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 40px;
+    padding: 60px;
+    opacity: 1;
+}
+
+.chamber {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 140, 0, 0.35);
+    padding: 40px;
+    border-radius: 10px;
+    backdrop-filter: blur(6px);
+    cursor: pointer;
+    transition: 0.35s ease;
+    text-align: center;
+    position: relative;
+}
+
+.chamber:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 22px rgba(255, 140, 0, 0.35);
+}
+
+.chamber .glyph {
+    font-size: 48px;
+    margin-bottom: 12px;
+    color: #ffb35c;
+    text-shadow: 0 0 12px rgba(255, 140, 0, 0.45);
+    transition: 0.35s ease;
+}
+
+.chamber:hover .glyph {
+    text-shadow: 0 0 22px rgba(255, 140, 0, 0.65);
+    transform: scale(1.08);
+}
+
+/* ========================= */
+/*       GENERIC OVERLAY     */
+/* ========================= */
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 10, 12, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+    z-index: 30;
+}
+
+.overlay.showing {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.overlay-content {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 140, 0, 0.4);
+    padding: 50px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 25px rgba(255, 140, 0, 0.25);
+}
+
+/* ========================= */
+/*     IDENTITY DRIFT UI     */
+/* ========================= */
+
+.drift-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 10, 12, 0.88);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.45s ease;
+    backdrop-filter: blur(12px);
+    z-index: 40;
+}
+
+.drift-overlay.showing {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.drift-content {
+    text-align: center;
+    padding: 60px;
+    border: 1px solid rgba(255, 140, 0, 0.45);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    box-shadow: 0 0 28px rgba(255, 140, 0, 0.35);
+    backdrop-filter: blur(14px);
+    transform: translateY(20px);
+    opacity: 0;
+    transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+.drift-overlay.showing .drift-content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.drift-glyph {
+    font-size: 64px;
+    margin-bottom: 20px;
+    color: #ffb35c;
+    text-shadow: 0 0 22px rgba(255, 140, 0, 0.65);
+    animation: driftPulse 2.2s infinite ease-in-out;
+}
+
+@keyframes driftPulse {
+    0% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.12); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.9; }
+}
+
+/* ========================= */
+/*       RITUAL OVERLAY      */
+/* ========================= */
+
+.ritual-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(12, 12, 14, 0.88);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.45s ease;
+    backdrop-filter: blur(14px);
+    z-index: 40;
+}
+
+.ritual-overlay.showing {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.ritual-card {
+    text-align: center;
+    padding: 60px;
+    border: 1px solid rgba(255, 140, 0, 0.45);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    box-shadow: 0 0 32px rgba(255, 140, 0, 0.35);
+    backdrop-filter: blur(16px);
+    transform: scale(0.92);
+    opacity: 0;
+    transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+.ritual-overlay.showing .ritual-card {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.ritual-glyph {
+    font-size: 64px;
+    margin-bottom: 20px;
+    color: #ffb35c;
+    text-shadow: 0 0 22px rgba(255, 140, 0, 0.65);
+    animation: ritualIgnite 1.8s infinite ease-in-out;
+}
+
+@keyframes ritualIgnite {
+    0% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.14); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.9; }
+}
+
+/* ========================= */
+/*       MEMORY OVERLAY      */
+/* ========================= */
+
+.memory-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(12, 12, 14, 0.88);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.45s ease;
+    backdrop-filter: blur(14px);
+    z-index: 40;
+}
+
+.memory-overlay.showing {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.memory-card {
+    text-align: center;
+    padding: 50px;
+    border: 1px solid rgba(255, 140, 0, 0.45);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    box-shadow: 0 0 32px rgba(255, 140, 0, 0.35);
+    backdrop-filter: blur(16px);
+    transform: translateY(20px);
+    opacity: 0;
+    transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+.memory-overlay.showing .memory-card {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.memory-glyph {
+    font-size: 60px;
+    margin-bottom: 20px;
+    color: #ffb35c;
+    text-shadow: 0 0 22px rgba(255, 140, 0, 0.65);
+    animation: memoryPulse 2.4s infinite ease-in-out;
+}
+
+@keyframes memoryPulse {
+    0% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.10); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.9; }
+}
+
+/* ========================= */
+/*       MEMORY PANEL        */
+/* ========================= */
+
+.memory-list {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.memory-entry {
+    display: flex;
+    gap: 14px;
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 140, 0, 0.35);
+    border-radius: 8px;
+    backdrop-filter: blur(6px);
+}
+
+.memory-entry-glyph {
+    font-size: 28px;
+    color: #ffb35c;
+    text-shadow: 0 0 12px rgba(255, 140, 0, 0.45);
 }
