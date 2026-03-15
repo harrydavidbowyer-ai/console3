@@ -1,96 +1,70 @@
-/* ========================= */
-/*      SOLAR-FLARE OS       */
-/*      EMBER PALETTE        */
-/* ========================= */
-
-:root {
-    --charcoal: #0d0d0f;
-    --charcoal-soft: #1a1a1d;
-    --ember: #ffb347;
-    --ember-deep: #ff8c00;
-    --ember-glow: rgba(255, 140, 0, 0.35);
-    --glass: rgba(255, 255, 255, 0.05);
-    --glass-strong: rgba(255, 255, 255, 0.12);
-    --white-soft: #e6e6e6;
-    --transition: 0.35s ease;
-}
-
-/* GLOBAL */
 body {
-    background: var(--charcoal);
-    color: var(--white-soft);
-    font-family: "Inter", sans-serif;
+    background: #0b0b0d;
+    color: #e8e6e3;
+    font-family: "Inter", Arial, sans-serif;
     margin: 0;
     padding: 0;
 }
 
 /* ========================= */
-/*         CONSOLE UI        */
+/*       CONSOLE BUTTON      */
 /* ========================= */
 
 .console-toggle {
     position: fixed;
     top: 20px;
     right: 20px;
-    background: var(--glass);
-    border: 1px solid var(--ember);
-    color: var(--ember);
-    padding: 10px 20px;
+    padding: 12px 26px;
+    border: 1px solid #ff8c00;
+    background: rgba(255, 140, 0, 0.08);
+    color: #ffb35c;
     cursor: pointer;
-    backdrop-filter: blur(10px);
-    transition: var(--transition);
+    backdrop-filter: blur(6px);
+    border-radius: 6px;
+    transition: 0.25s ease;
 }
 
 .console-toggle:hover {
-    background: var(--ember-glow);
+    background: rgba(255, 140, 0, 0.18);
+    box-shadow: 0 0 12px rgba(255, 140, 0, 0.35);
 }
+
+/* ========================= */
+/*         CONSOLE UI        */
+/* ========================= */
 
 .console {
     position: fixed;
     top: 0;
     right: 0;
-    width: 380px;
+    width: 360px;
     height: 100vh;
-    background: var(--charcoal-soft);
-    border-left: 1px solid var(--ember);
-    backdrop-filter: blur(20px);
+    background: rgba(20, 20, 24, 0.85);
+    border-left: 1px solid rgba(255, 140, 0, 0.4);
+    backdrop-filter: blur(12px);
     transform: translateX(100%);
-    transition: var(--transition);
-    display: flex;
+    transition: transform 0.35s ease;
+    padding-top: 70px;
 }
 
 .console.visible {
     transform: translateX(0);
 }
 
-.console-nav {
-    width: 120px;
-    border-right: 1px solid var(--ember);
-    padding-top: 60px;
-}
-
-.console-nav ul {
-    list-style: none;
-    padding: 0;
-}
-
 .console-nav li {
-    padding: 12px 20px;
+    padding: 14px 24px;
     cursor: pointer;
-    transition: var(--transition);
+    color: #ffb35c;
+    transition: 0.2s ease;
 }
 
 .console-nav li:hover {
-    background: var(--ember-glow);
-}
-
-.console-panels {
-    flex: 1;
-    padding: 40px 20px;
+    background: rgba(255, 140, 0, 0.12);
 }
 
 .console-panel {
     display: none;
+    padding: 24px;
 }
 
 .console-panel.visible {
@@ -101,27 +75,24 @@ body {
 /*       CHAMBER SYSTEM      */
 /* ========================= */
 
-#chambers {
-    margin-top: 120px;
-    padding: 40px;
-}
-
 .chamber {
-    background: var(--glass-strong);
-    border: 1px solid var(--ember);
-    padding: 40px;
-    margin-bottom: 40px;
-    border-radius: 12px;
-    backdrop-filter: blur(12px);
-    transition: var(--transition);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 140, 0, 0.35);
+    padding: 50px;
+    margin: 50px;
+    cursor: pointer;
+    border-radius: 8px;
+    backdrop-filter: blur(6px);
+    transition: 0.3s ease;
 }
 
 .chamber:hover {
-    box-shadow: 0 0 20px var(--ember-glow);
+    box-shadow: 0 0 18px rgba(255, 140, 0, 0.35);
+    transform: translateY(-2px);
 }
 
 /* ========================= */
-/*       OVERLAY SYSTEM      */
+/*        OVERLAY UI         */
 /* ========================= */
 
 .overlay {
@@ -130,24 +101,25 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(13, 13, 15, 0.85);
-    backdrop-filter: blur(20px);
+    background: rgba(10, 10, 12, 0.85);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: var(--transition);
-}
-
-.overlay.hidden {
     opacity: 0;
     pointer-events: none;
+    transition: opacity 0.35s ease;
+}
+
+.overlay.showing {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .overlay-content {
-    background: var(--glass);
-    border: 1px solid var(--ember);
-    padding: 40px;
-    border-radius: 12px;
-    max-width: 600px;
-    text-align: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 140, 0, 0.4);
+    padding: 50px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 25px rgba(255, 140, 0, 0.25);
 }
